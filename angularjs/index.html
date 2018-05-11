@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" ng-app="TheBestToDo">
+  <head>
+    <meta charset="utf-8">
+    <title>A simple ToDo app</title>
+    <!-- Angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  </head>
+  <body>
+    <h1>The Best ToDo application</h1>
+    <div ng-controller="formcontroller">
+      <h1>I want to do {{ whattodo }}</h1>
+      <form>
+        <label>What do you want to do</label>
+        <input type="text" ng-model="whattodo">
+        <button ng-click="addToDo(whattodo)">Add something</button>
+      </form>
+    </div>
+    <div ng-controller="todolistcontroller">
+      <p>Total ({{ totalitems }})</p>
+      <ul ng-if="items">
+        <li ng-repeat="(k, i) in items">[{{ i }}]: {{ k }}, {{ i.whattodo }} - <a ng-click="changeState(k)">{{ i.itsdone }}</a> - <a ng-click="deleteElement(k)">[X]</a></li>
+      </ul>
+    </div>
+    <script>
+    // Initialice the module
+    var myTodoApp = angular.module('TheBestToDo', []);
+    </script>
+    <!-- Services -->
+    <script src="./src/factorycomponent.js"></script>
+    <!-- Controllers -->
+    <script src="./src/formcomponent.js"></script>
+    <script src="./src/todolistcomponent.js"></script>
+  </body>
+</html>
