@@ -40,11 +40,7 @@ src/todolistcomponent.js
 
 The index will mount the app and the two components. Every component relay on the factory who have the definition and the methods where the to do data is.
 
-index.html > formcomponent & todolistcomponent
-                  |               |
-                  |               |
-                  -----------------
-                      factorycomponent
+![alt app architecture](http://https://github.com/jhderojasUVa/ToDo/img/architecture.png)
 
 First at all we read the factory component that creates the "data store" called ToDoItems who is an object where as a property have an array called ToDoItem and several methods (create, add, delete, change state and retrieve all).
 
