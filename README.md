@@ -4,7 +4,7 @@ ToDo is a place to put a simple ToDo application (you know, an app where you put
 
 The reason it's to help people know the different basic ways how to create a web app.
 
-## Angular. Not begin
+## Angular. Done v0.1
 
 Of course there will be an Angular version of the simple ToDo. This will be made with Angular (not AngularJS).
 
