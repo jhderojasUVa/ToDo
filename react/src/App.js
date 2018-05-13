@@ -1,18 +1,37 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+
+// Because don't use Redux as a storage central we use the method of a parent component (App) that have two child components (formComponent and todoItemComponent)
+// Components
+import FormComponent from './components/formcomponent/form';
+import TodoItemComponent from './components/todoitemscomponent/todoitems';
+
+// Generic CSS
 import './App.css';
 
 class App extends Component {
+
+  constructor() {
+    super();
+    this.state = {
+      items: [
+        {
+          whattodo: 'Something',
+          itsdone: true
+        },
+        {
+          whattodo: 'Anything',
+          itsdone: false
+        }
+      ]
+    }
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <h1>ToDo</h1>
+        <FormComponent/>
+        <TodoItemComponent items={this.state.items}/>
       </div>
     );
   }
