@@ -29,7 +29,7 @@ class TodoItemComponent extends Component {
 
   render() {
 
-    let items;
+    let items, itsdoneitem;
 
     if (this.props.items) {
       items = this.props.items.map((item, index) => {
