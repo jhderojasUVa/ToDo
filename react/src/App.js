@@ -30,7 +30,8 @@ class App extends Component {
     return (
       <div className="App">
         <h1>ToDo</h1>
-        <FormComponent/>
+        <FormComponent items={this.state.items}/>
+        <br />
         <TodoItemComponent items={this.state.items}/>
       </div>
     );
