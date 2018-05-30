@@ -24,12 +24,10 @@ class FormComponent extends Component {
       whattodo: this.state.whattodo,
       itsdone: true
     });
-    console.log(this.props.items);
     event.preventDefault();
   }
 
   render() {
-    console.log(this.props.items);
     return (
       <div className="FormComponent">
         <p>I want to do {this.state.whattodo}</p>

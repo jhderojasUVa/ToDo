@@ -5,32 +5,41 @@ class TodoItemComponent extends Component {
   constructor(props) {
     super(props);
 
-    this.deleteItem = this.deleteItem.bind(this);
-    this.changeItem = this.changeItem.bind(this);
   }
 
   deleteItem(index) {
-    console.log('deleteIndex = '+index);
+    // Delete an item by his index
+    this.props.items.splice(index, 1);
+
+    // Re-rendering the component in order to show the changes
+    this.forceUpdate();
   }
 
   changeItem(index) {
-    console.log('changeItem = '+index);
+    // Change an item by his index
+    if (this.props.items[index].itsdone === true) {
+      this.props.items[index].itsdone = false;
+    } else {
+      this.props.items[index].itsdone = true;
+    }
+
+    // Re-rendering the component in order to show the changes
+    this.forceUpdate();
   }
 
   render() {
 
-    let items, itsdoneitem;
+    let items;
 
     if (this.props.items) {
       items = this.props.items.map((item, index) => {
-        console.log(index);
         if (item.itsdone === true) {
           itsdoneitem = 'true';
         } else {
           itsdoneitem = 'false';
         }
         return (
-          <li key={index}>{item.whattodo} - <a href={this.changeItem(index)}>{itsdoneitem}</a> - <a href={this.deleteItem(index)}>[X]</a></li>
+          <li key={index}>{item.whattodo} - <a onClick={this.changeItem.bind(this, index)}>{itsdoneitem}</a> - <a onClick={this.deleteItem.bind(this, index)}>[X]</a></li>
         )
       });
     }
