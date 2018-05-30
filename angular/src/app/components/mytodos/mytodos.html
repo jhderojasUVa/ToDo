@@ -1,0 +1,6 @@
+<h2>Let's do</h2>
+<div class="mylist">
+  <ul>
+    <li *ngFor="let item of items; let i = index">{{ item.whattodo }} - <a (click)="changeState(i)">{{ item.itsdone }}</a> - <a (click)="deleteItem(i)">[X]</a></li>
+  </ul>
+</div>

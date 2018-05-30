@@ -1,0 +1,9 @@
+.centerContent {
+  margin: 0 auto;
+  width: 480px;
+}
+
+.centerContent h1 {
+  margin: 0 auto;
+  text-align: center;
+}
