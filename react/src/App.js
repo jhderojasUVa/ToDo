@@ -12,6 +12,7 @@ class App extends Component {
 
   constructor() {
     super();
+    // Two items as example
     this.state = {
       items: [
         {
@@ -24,13 +25,24 @@ class App extends Component {
         }
       ]
     }
+
+    this.handleChangeRoot = this.handleChangeRoot.bind(this);
+  }
+
+  handleChangeRoot(theitems) {
+    // Simply force updating the components in order to call the child components with new data
+    this.forceUpdate();
   }
 
   render() {
+
+    console.log(this.state.items);
+
+
     return (
       <div className="App">
         <h1>ToDo</h1>
-        <FormComponent items={this.state.items}/>
+        <FormComponent items={this.state.items} onChange={this.handleChangeRoot}/>
         <br />
         <TodoItemComponent items={this.state.items}/>
       </div>

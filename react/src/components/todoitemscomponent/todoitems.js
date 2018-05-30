@@ -2,11 +2,6 @@ import React, { Component } from 'react';
 
 class TodoItemComponent extends Component {
 
-  constructor(props) {
-    super(props);
-
-  }
-
   deleteItem(index) {
     // Delete an item by his index
     this.props.items.splice(index, 1);

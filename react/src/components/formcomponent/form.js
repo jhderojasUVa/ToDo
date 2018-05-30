@@ -13,18 +13,24 @@ class FormComponent extends Component {
   }
 
   handleWrite(event) {
+    // Handle the text change for putting the text
     this.setState({
       whattodo: event.target.value
     });
   }
 
   handleSubmit(event) {
+    // First, prevent the form to send the data
+    event.preventDefault();
+    
     // Addiding an item
     this.props.items.push({
       whattodo: this.state.whattodo,
       itsdone: true
     });
-    event.preventDefault();
+
+    // Passing data to the parent
+    this.props.onChange(this.props.items);
   }
 
   render() {
