@@ -36,9 +36,6 @@ class App extends Component {
 
   render() {
 
-    console.log(this.state.items);
-
-
     return (
       <div className="App">
         <h1>ToDo</h1>
