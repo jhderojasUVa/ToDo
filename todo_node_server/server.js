@@ -103,7 +103,24 @@ const server = http.createServer((req, res) => {
     default:
       res.statusCode = 404;
       res.setHeader('Content-Type', 'text/html');
-      res.end(`<h1>Page not found</h1>
+      res.end(`<!doctype html>
+        <html lang="en">
+        <head>
+          <title>404! Page not found</title>
+          <style>
+          html {
+            font-family: Arial, Helvetica, Times;
+            font-size: 1em;
+            font-color: black;
+          }
+          body {
+            max-width: 50%;
+            margin: auto;
+          }
+          </style>
+        </head>
+        <body>
+        <h1>404: Page not found</h1>
         <p>Sorry, the page you are looking for is not here.</p>
         <p>
           <ul>
@@ -113,6 +130,8 @@ const server = http.createServer((req, res) => {
           </ul>
         </p>
         <p>Every time you do the correct it will respond with the ToDos.</p>
+        </body>
+        </html>
         `);
       console.log('404! Send to default page!');
   }
