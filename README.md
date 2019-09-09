@@ -23,3 +23,11 @@ A version with React and Redux as storage.
 ## Polymer. Not done
 
 A version made with Polymer.
+
+## Node
+
+If you need a server, on the todo_node_server you will find one to test for simple REST.
+
+To run it: node server.js
+
+And read the console :)
