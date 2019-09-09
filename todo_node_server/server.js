@@ -11,6 +11,30 @@ var todoData = [
 const server = http.createServer((req, res) => {
 
   const url = require('url').parse(req.url);
+  // Input variables
+  let id, whatToDo, completed;
+  // If there's query let's separate the variables
+  if (url.query) {
+    switch (url.query.split('&').length) {
+      case 1:
+        // There's only one
+        break;
+      case 2:
+        // Only two
+        whatToDo = url.query.split('&')[0];
+        completed = url.query.split('&')[1];
+        break;
+      case 3:
+        // All of them
+        id = url.query.split('&')[0];
+        whatToDo = url.query.split('&')[1];
+        completed =url.query.split('&')[2];
+        break;
+      default:
+        // Other
+        break;
+    }
+  }
 
   switch (url.pathname) {
     case ('/get'):
@@ -22,8 +46,6 @@ const server = http.createServer((req, res) => {
       break;
     case ('/post'):
       // Put a new one to do
-      //const [ id, whatToDo, completed ] = url.query.split('&');
-      const [ whatToDo, completed ] = url.query.split('&');
       try {
         todoData.push({
           id: todoData.length + 1,
@@ -36,8 +58,46 @@ const server = http.createServer((req, res) => {
       } catch (err) {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'text/plain');
-        res.end('There was an error.\nHey man, there was an error!\n');
+        res.end('There was an error.\nHey man, there was an error!\n' + err);
         console.log('Error 500!');
+        console.log(err);
+      }
+      break;
+    case ('/delete'):
+      // Removes an element by id
+      try {
+        todoData = todoData.filter((element, key) => {
+          return element.id != parseInt(id.split('=')[1]);
+        });
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(todoData));
+      } catch (err) {
+        res.statusCode = 500;
+        res.setHeader('Content-Type', 'text/plain');
+        res.end('There was an error.\nHey man, there was an error!\n' + err);
+        console.log('Error 500!');
+        console.log(err);
+      }
+      break;
+    case ('/update'):
+      // Updates an element by ID
+      try {
+        todoData.forEach((element) => {
+          if (element.id == parseInt(id.split('=')[1])) {
+            element.whatToDo = whatToDo.split('=')[1];
+            element.completed = (completed.split('=')[1] == 'true')
+          }
+        });
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(todoData));
+      } catch (err) {
+        res.statusCode = 500;
+        res.setHeader('Content-Type', 'text/plain');
+        res.end('There was an error.\nHey man, there was an error!\n' + err);
+        console.log('Error 500!');
+        console.log(err);
       }
       break;
     default:
@@ -49,11 +109,12 @@ const server = http.createServer((req, res) => {
           <ul>
             <li><strong>/get</strong>: for getting all the TODOs</li>
             <li><strong>/post?whatToDo=XXXXX&completed=true|false</strong>: to add a ToDo</li>
+            <li><strong>/delete?id=XXX</strong>: removes a TODO by id</li>
           </ul>
         </p>
         <p>Every time you do the correct it will respond with the ToDos.</p>
         `);
-      console.log('404!');
+      console.log('404! Send to default page!');
   }
 });
 
