@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>404 page not found</title>
+    <style>
+      html {
+        font-family: Arial, Helvetica, Times;
+        font-size: 1em;
+        font-color: black;
+      }
+      body {
+        max-width: 50%;
+        margin: auto;
+        padding: 1em;
+      }
+      h1 {
+        color: rgba(30, 30, 30);
+      }
+      p {
+        color: rgba(90, 90, 90);
+        font-size: 0.9em;
+      }
+      ul li {
+        list-style-type: square;
+        font-size: 0.85em;
+        padding: 0.2em 0.4em;
+      }
+      footer {
+        border-top: 1px solid rgba(150, 150, 150);
+        margin-top: 2em;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>404: Page not found</h1>
+    <p>Sorry, the page you are looking for is not here.</p>
+    <p>
+      <ul>
+        <li><strong>/get</strong>: for getting all the TODOs</li>
+        <li><strong>/post?whatToDo=XXXXX&completed=true|false</strong>: to add a ToDo</li>
+        <li><strong>/delete?id=XXX</strong>: removes a TODO by id</li>
+      </ul>
+    </p>
+    <p>Every time you do the correct it will respond with the ToDos.</p>
+    <footer>
+      <small>Node REST ToDo example Server</small>
+    </footer>
+  </body>
+</html>

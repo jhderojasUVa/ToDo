@@ -1,4 +1,5 @@
 const http = require('http');
+const fs = require('fs');
 
 const hostname = '127.0.0.1';
 const port = 3000;
@@ -49,7 +50,7 @@ const server = http.createServer((req, res) => {
       try {
         todoData.push({
           id: todoData.length + 1,
-          whatToDo: whatToDo.split('=')[1],
+          whatToDo: decodeURI(whatToDo.split('=')[1]),
           completed: (completed.split('=')[1] == 'true')
         });
         res.statusCode = 200;
@@ -103,36 +104,14 @@ const server = http.createServer((req, res) => {
     default:
       res.statusCode = 404;
       res.setHeader('Content-Type', 'text/html');
-      res.end(`<!doctype html>
-        <html lang="en">
-        <head>
-          <title>404! Page not found</title>
-          <style>
-          html {
-            font-family: Arial, Helvetica, Times;
-            font-size: 1em;
-            font-color: black;
-          }
-          body {
-            max-width: 50%;
-            margin: auto;
-          }
-          </style>
-        </head>
-        <body>
-        <h1>404: Page not found</h1>
-        <p>Sorry, the page you are looking for is not here.</p>
-        <p>
-          <ul>
-            <li><strong>/get</strong>: for getting all the TODOs</li>
-            <li><strong>/post?whatToDo=XXXXX&completed=true|false</strong>: to add a ToDo</li>
-            <li><strong>/delete?id=XXX</strong>: removes a TODO by id</li>
-          </ul>
-        </p>
-        <p>Every time you do the correct it will respond with the ToDos.</p>
-        </body>
-        </html>
-        `);
+      // Read the file index.html
+      fs.readFile( __dirname + '/index.html', function (err, data) {
+        if (err) {
+          throw err;
+        }
+        // Send to the browser
+        res.end(data.toString());
+      });
       console.log('404! Send to default page!');
   }
 });
