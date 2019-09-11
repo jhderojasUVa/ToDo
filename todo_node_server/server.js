@@ -131,7 +131,7 @@ function saveInStore(whatToDo, completed) {
 
   let data = JSON.parse(retrieveStore());
   data.ToDos.push({
-    'id': data.ToDos.length + 1,
+    'id': (data.ToDos[(data.ToDos.length - 1)].id) + 1,
     'whatToDo': whatToDo,
     'completed': completed
   });
