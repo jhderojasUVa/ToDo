@@ -37,11 +37,16 @@ const server = http.createServer((req, res) => {
 
   switch (url.pathname) {
     case ('/get'):
-      // Get all the to do
+      // Get all the to do or one by id
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
-      res.end(retrieveStore());
-      console.log('The user GET all the ToDos');
+      if (typeof id == 'string' && parseInt(id.split('=')[1]) != 0) {
+        res.end(retrieveToDo(parseInt(id.split('=')[1])));
+        console.log('The user GET a ToDo with ID: ' + parseInt(id.split('=')[1]));
+      } else {
+        res.end(retrieveStore());
+        console.log('The user GET all the ToDos');
+      }
       break;
     case ('/post'):
       // Put a new one to do
@@ -106,10 +111,27 @@ server.listen(port, hostname, () => {
 
 function retrieveStore() {
   // This function will retrieve the the content of the store file
-  // R@return (string)
+  // @return (string)
   return fs.readFileSync(__dirname + '/store/file.json', (err, data) => {
     return data.toString();
   }).toString();
+}
+
+function retrieveToDo(id) {
+  // This function will return one ToDo by id
+  // id (number)
+  // @return ToDo (JSON)
+
+  // First we test the arguments
+  if (typeof id !== 'number') {
+    return false;
+  }
+
+  let data = JSON.parse(retrieveStore());
+
+  return JSON.stringify(data.ToDos.filter((element) => {
+    return element.id == id;
+  }));
 }
 
 function saveInStore(whatToDo, completed) {
