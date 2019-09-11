@@ -4,10 +4,7 @@ const fs = require('fs');
 const hostname = '127.0.0.1';
 const port = 3000;
 
-// Data to store in memory with one example
-var todoData = [
-  { id: 1, whatToDo: 'nothing', completed: false }
-];
+// The data is stored in a file called file.json on the store directory
 
 const server = http.createServer((req, res) => {
 
@@ -42,20 +39,16 @@ const server = http.createServer((req, res) => {
       // Get all the to do
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify(todoData));
+      res.end(retrieveStore());
       console.log('The user GET all the ToDos');
       break;
     case ('/post'):
       // Put a new one to do
       try {
-        todoData.push({
-          id: todoData.length + 1,
-          whatToDo: decodeURI(whatToDo.split('=')[1]),
-          completed: (completed.split('=')[1] == 'true')
-        });
+        saveInStore(decodeURI(whatToDo.split('=')[1]), (completed.split('=')[1] == 'true'));
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(todoData));
+        res.end(retrieveStore());
       } catch (err) {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'text/plain');
@@ -84,12 +77,7 @@ const server = http.createServer((req, res) => {
     case ('/update'):
       // Updates an element by ID
       try {
-        todoData.forEach((element) => {
-          if (element.id == parseInt(id.split('=')[1])) {
-            element.whatToDo = whatToDo.split('=')[1];
-            element.completed = (completed.split('=')[1] == 'true')
-          }
-        });
+        
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(todoData));
@@ -105,7 +93,7 @@ const server = http.createServer((req, res) => {
       res.statusCode = 404;
       res.setHeader('Content-Type', 'text/html');
       // Read the file index.html
-      fs.readFile( __dirname + '/index.html', function (err, data) {
+      fs.readFile( __dirname + '/index.html', (err, data) => {
         if (err) {
           throw err;
         }
@@ -119,3 +107,99 @@ const server = http.createServer((req, res) => {
 server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
+
+function retrieveStore() {
+  // This function will retrieve the the content of the store file
+  return fs.readFileSync(__dirname + '/store/file.json', (err, data) => {
+    return data.toString();
+  }).toString();
+}
+
+function saveInStore(whatToDo, completed) {
+  // Saves a ToDo in the store
+  // whatToDo (string): Text to write
+  // completed (boolean): if it's completed or not
+  // Return false if fails, true if all is ok
+
+  // This can be done in only one line, but on this ways is more readable
+  // First we test the arguments
+  if (typeof whatToDo != String && whatToDo == '') {
+    return false;
+  }
+
+  // Now if the completed is ok
+  if (typeof completed !== "boolean") {
+    return false;
+  }
+
+  let data = JSON.parse(retrieveStore());
+  data.ToDos.push({
+    'id': data.ToDos.length + 1,
+    'whatToDo': whatToDo,
+    'completed': completed
+  });
+  fs.writeFile(__dirname + '/store/file.json', JSON.stringify(data), (err) => {
+    if (err) {
+      console.log('There was an error saving the store file: ' + err);
+    }
+  });
+}
+
+function updateStore(id, whatToDo, completed) {
+  // Function that updates an item in the store
+  // First we test the arguments
+  if (typeof id !== 'number') {
+    return false;
+  }
+
+  if (typeof whatToDo != String && whatToDo == '') {
+    return false;
+  }
+
+  // Now if the completed is ok
+  if (typeof completed !== 'boolean') {
+    return false;
+  }
+
+  // First we retrieve the data
+  let data = JSON.parse(retrieveStore());
+
+  // Search and change the item
+  data.ToDos.forEach((element) => {
+    if (element.id == parseInt(id.split('=')[1])) {
+      element.whatToDo = whatToDo.split('=')[1];
+      element.completed = (completed.split('=')[1] == 'true')
+    }
+  });
+
+  // Now save the file
+  fs.writeFile(__dirname + '/store/file.json', JSON.stringify(data), (err) => {
+    if (err) {
+      console.log('There was an error saving the store file: ' + err);
+    }
+  });
+}
+
+function deleteStore(id) {
+  // Function that removes an element from the store
+
+  // Check the argument
+  if (typeof id !== 'number') {
+    return false;
+  }
+
+  // First we retrieve the data
+  let data = JSON.parse(retrieveStore());
+
+  // Now we remove the item with the id from the data
+  data.ToDos = data.ToDos.filter((element, key) => {
+    return element.id != parseInt(id.split('=')[1]);
+  });
+
+  // Save to disk
+  fs.writeFile(__dirname + '/store/file.json', JSON.stringify(data), (err) => {
+    if (err) {
+      console.log('There was an error saving the store file: ' + err);
+    }
+  });
+}
