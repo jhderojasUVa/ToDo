@@ -34,7 +34,9 @@ A very simple REST node that you can execute and make the petitions:
 
 ## /get
 
-It will respond all the ToDos, no more no less in JSON format.
+It will respond all the ToDos, no more no less in JSON format. Example:
+
+http://localhost:3000/get
 
 ## /post
 
