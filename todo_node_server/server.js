@@ -16,6 +16,7 @@ const server = http.createServer((req, res) => {
     switch (url.query.split('&').length) {
       case 1:
         // There's only one
+        id = url.query.split('&')[0];
         break;
       case 2:
         // Only two
@@ -45,10 +46,9 @@ const server = http.createServer((req, res) => {
     case ('/post'):
       // Put a new one to do
       try {
-        saveInStore(decodeURI(whatToDo.split('=')[1]), (completed.split('=')[1] == 'true'));
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.end(retrieveStore());
+        res.end(saveInStore(decodeURI(whatToDo.split('=')[1]), (completed.split('=')[1] == 'true')));
       } catch (err) {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'text/plain');
@@ -60,12 +60,9 @@ const server = http.createServer((req, res) => {
     case ('/delete'):
       // Removes an element by id
       try {
-        todoData = todoData.filter((element, key) => {
-          return element.id != parseInt(id.split('=')[1]);
-        });
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(todoData));
+        res.end(deleteStore(parseInt(id.split('=')[1])));
       } catch (err) {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'text/plain');
@@ -77,10 +74,9 @@ const server = http.createServer((req, res) => {
     case ('/update'):
       // Updates an element by ID
       try {
-        
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(todoData));
+        res.end(updateStore(parseInt(id.split('=')[1]), decodeURI(whatToDo.split('=')[1]), (completed.split('=')[1] == 'true')));
       } catch (err) {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'text/plain');
@@ -110,6 +106,7 @@ server.listen(port, hostname, () => {
 
 function retrieveStore() {
   // This function will retrieve the the content of the store file
+  // R@return (string)
   return fs.readFileSync(__dirname + '/store/file.json', (err, data) => {
     return data.toString();
   }).toString();
@@ -119,7 +116,7 @@ function saveInStore(whatToDo, completed) {
   // Saves a ToDo in the store
   // whatToDo (string): Text to write
   // completed (boolean): if it's completed or not
-  // Return false if fails, true if all is ok
+  // @return (boolean)
 
   // This can be done in only one line, but on this ways is more readable
   // First we test the arguments
@@ -138,25 +135,31 @@ function saveInStore(whatToDo, completed) {
     'whatToDo': whatToDo,
     'completed': completed
   });
-  fs.writeFile(__dirname + '/store/file.json', JSON.stringify(data), (err) => {
+  fs.writeFileSync(__dirname + '/store/file.json', JSON.stringify(data), (err) => {
     if (err) {
       console.log('There was an error saving the store file: ' + err);
     }
   });
+
+  return JSON.stringify(data);
 }
 
 function updateStore(id, whatToDo, completed) {
   // Function that updates an item in the store
+  // id (number)
+  // whatToDo (string)
+  // completed (boolean)
+  // @return (string)
+
   // First we test the arguments
   if (typeof id !== 'number') {
     return false;
   }
 
-  if (typeof whatToDo != String && whatToDo == '') {
+  if (typeof whatToDo != 'string' && whatToDo == '') {
     return false;
   }
 
-  // Now if the completed is ok
   if (typeof completed !== 'boolean') {
     return false;
   }
@@ -166,9 +169,9 @@ function updateStore(id, whatToDo, completed) {
 
   // Search and change the item
   data.ToDos.forEach((element) => {
-    if (element.id == parseInt(id.split('=')[1])) {
-      element.whatToDo = whatToDo.split('=')[1];
-      element.completed = (completed.split('=')[1] == 'true')
+    if (element.id == id) {
+      element.whatToDo = whatToDo;
+      element.completed = completed
     }
   });
 
@@ -178,11 +181,14 @@ function updateStore(id, whatToDo, completed) {
       console.log('There was an error saving the store file: ' + err);
     }
   });
+
+  return JSON.stringify(data);
 }
 
 function deleteStore(id) {
   // Function that removes an element from the store
-
+  // id (number)
+  // @return (string)
   // Check the argument
   if (typeof id !== 'number') {
     return false;
@@ -193,7 +199,7 @@ function deleteStore(id) {
 
   // Now we remove the item with the id from the data
   data.ToDos = data.ToDos.filter((element, key) => {
-    return element.id != parseInt(id.split('=')[1]);
+    return element.id != id;
   });
 
   // Save to disk
@@ -202,4 +208,6 @@ function deleteStore(id) {
       console.log('There was an error saving the store file: ' + err);
     }
   });
+
+  return JSON.stringify(data);
 }
