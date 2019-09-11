@@ -2,6 +2,12 @@
 
 Because it will be nice to have a simple rest service without creating complex things I have done this.
 
+## How to run
+
+1. Install Node from https://nodejs.org
+2. run: node server.js
+3. Done!
+
 It runs on port 3000 but you can change if you need it.
 
 http://localhost:3000/
