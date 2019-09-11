@@ -38,6 +38,10 @@ It will respond all the ToDos, no more no less in JSON format. Example:
 
 http://localhost:3000/get
 
+You can also, get one item by his id:
+
+http://localhost:3000/get?id=1
+
 ## /post
 
 Add ToDos with this!. No need to tell the ID. Example:
