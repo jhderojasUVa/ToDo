@@ -16,6 +16,20 @@ todoData = [
   }
 ]
 
+Now it stores in disk on a directory called "store" in a file called "file.json" with this structure for better readability and future improvements.
+
+{
+    "ToDos": [
+        {
+            "id": "1",
+            "whatToDo": "nothing",
+            "completed": true
+        }
+    ]
+}
+
+Thinking about letting you to choose saving the data on memory, on file, on local storage and on session storage, because... why not?.
+
 A very simple REST node that you can execute and make the petitions:
 
 ## /get
