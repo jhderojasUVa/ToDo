@@ -94,6 +94,7 @@ const server = http.createServer((req, res) => {
       }
       break;
     case ('/refactor'):
+      // Reorder all the ToDos to solve the empty id problem
       try {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
