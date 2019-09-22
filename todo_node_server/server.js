@@ -54,6 +54,7 @@ const server = http.createServer((req, res) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.end(saveInStore(decodeURI(whatToDo.split('=')[1]), (completed.split('=')[1] == 'true')));
+        console.log('User creates a new item');
       } catch (err) {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'text/plain');
@@ -68,6 +69,7 @@ const server = http.createServer((req, res) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.end(deleteStore(parseInt(id.split('=')[1])));
+        console.log('User deletes an item: ' + parseInt(id.split('=')[1])));
       } catch (err) {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'text/plain');
@@ -82,6 +84,7 @@ const server = http.createServer((req, res) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.end(updateStore(parseInt(id.split('=')[1]), decodeURI(whatToDo.split('=')[1]), (completed.split('=')[1] == 'true')));
+        console.log('User update an item: ' + parseInt(id.split('=')[1]));
       } catch (err) {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'text/plain');
@@ -95,6 +98,7 @@ const server = http.createServer((req, res) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.end(refactorId());
+        console.log('User refactor all the IDs of the ToDos');
       } catch (err) {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'text/plain');
