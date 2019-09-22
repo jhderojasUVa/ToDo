@@ -70,6 +70,10 @@ http://localhost:3000/update?id=1&whatToDo=Anything&completed=false
 
 Will change the ToDo with id number 1 putting the content sent. Nothing more, nothing less
 
+## /refactor
+
+Clean the gaps between the IDs of the elements after some use. It's like the reorder in MySQL but more dirty.
+
 ## Do what you want
 
 Because it's so simple and need no libraries, do what ever you want, for example, -you can create a cache that stores the data on disk- or create an html files (on disk) to retrieve when the user calls some urls or whatever you want. It's free :)

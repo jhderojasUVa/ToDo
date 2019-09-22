@@ -90,6 +90,19 @@ const server = http.createServer((req, res) => {
         console.log(err);
       }
       break;
+    case ('/refactor'):
+      try {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(refactorId());
+      } catch (err) {
+        res.statusCode = 500;
+        res.setHeader('Content-Type', 'text/plain');
+        res.end('There was an error.\nHey man, there was an error!\n' + err);
+        console.log('Error 500!');
+        console.log(err);
+      }
+      break;
     default:
       res.statusCode = 404;
       res.setHeader('Content-Type', 'text/html');
@@ -225,6 +238,33 @@ function deleteStore(id) {
   });
 
   // Save to disk
+  fs.writeFile(__dirname + '/store/file.json', JSON.stringify(data), (err) => {
+    if (err) {
+      console.log('There was an error saving the store file: ' + err);
+    }
+  });
+
+  return JSON.stringify(data);
+}
+
+function refactorId() {
+  // Function that refactors the ids
+  // @return (string)
+
+  // First we retrieve the data
+  let data = JSON.parse(retrieveStore());
+
+  // Let's sort the elements by their IDs
+  data.ToDos.sort((elemA, elemB) => {
+    return elemA.id - elemB.id
+  });
+
+  // Now let's put the new IDs
+  data.ToDos.forEach((element, key) => {
+    element.id = key;
+  });
+
+  // And now, store into disk
   fs.writeFile(__dirname + '/store/file.json', JSON.stringify(data), (err) => {
     if (err) {
       console.log('There was an error saving the store file: ' + err);
