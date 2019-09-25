@@ -1,5 +1,6 @@
 const http = require('http');
 const fs = require('fs');
+const querystring = require('querystring');
 
 const hostname = '127.0.0.1';
 const port = 3000;
@@ -9,40 +10,17 @@ const port = 3000;
 const server = http.createServer((req, res) => {
 
   const url = require('url').parse(req.url);
-  // Input variables
-  let id, whatToDo, completed;
   // If there's query let's separate the variables
-  if (url.query) {
-    switch (url.query.split('&').length) {
-      case 1:
-        // There's only one
-        id = url.query.split('&')[0];
-        break;
-      case 2:
-        // Only two
-        whatToDo = url.query.split('&')[0];
-        completed = url.query.split('&')[1];
-        break;
-      case 3:
-        // All of them
-        id = url.query.split('&')[0];
-        whatToDo = url.query.split('&')[1];
-        completed =url.query.split('&')[2];
-        break;
-      default:
-        // Other
-        break;
-    }
-  }
+  var queryElements = querystring.parse(url.query, null, null, { decodeURIComponent: querystring.unescape() });
 
   switch (url.pathname) {
     case ('/get'):
       // Get all the to do or one by id
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
-      if (typeof id == 'string' && parseInt(id.split('=')[1]) != 0) {
-        res.end(retrieveToDo(parseInt(id.split('=')[1])));
-        console.log('The user GET a ToDo with ID: ' + parseInt(id.split('=')[1]));
+      if (queryElements.id != undefined) {
+        res.end(retrieveToDo(parseInt(queryElements.id)));
+        console.log('The user GET a ToDo with ID: ' + queryElements.id);
       } else {
         res.end(retrieveStore());
         console.log('The user GET all the ToDos');
@@ -53,8 +31,8 @@ const server = http.createServer((req, res) => {
       try {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.end(saveInStore(decodeURI(whatToDo.split('=')[1]), (completed.split('=')[1] == 'true')));
-        console.log('User creates a new item');
+        res.end(saveInStore(queryElements.whatToDo, queryElements.completed));
+        console.log('User creates a new item ('+ queryElements.whatToDo + ', ' + queryElements.completed +')');
       } catch (err) {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'text/plain');
@@ -68,8 +46,8 @@ const server = http.createServer((req, res) => {
       try {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.end(deleteStore(parseInt(id.split('=')[1])));
-        console.log('User deletes an item: ' + parseInt(id.split('=')[1])));
+        res.end(deleteStore(parseInt(queryElements.id)));
+        console.log('User deletes an item: ' + parseInt(queryElements.id));
       } catch (err) {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'text/plain');
@@ -83,8 +61,8 @@ const server = http.createServer((req, res) => {
       try {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.end(updateStore(parseInt(id.split('=')[1]), decodeURI(whatToDo.split('=')[1]), (completed.split('=')[1] == 'true')));
-        console.log('User update an item: ' + parseInt(id.split('=')[1]));
+        res.end(updateStore(parseInt(queryElements.id), queryElements.whatToDo, queryElements.completed));
+        console.log('User update an item: ' + parseInt(queryElements.id));
       } catch (err) {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'text/plain');
@@ -158,6 +136,9 @@ function saveInStore(whatToDo, completed) {
   // completed (boolean): if it's completed or not
   // @return (boolean)
 
+  // Convert completed string to boolean
+  completed = (completed == 'true');
+
   // This can be done in only one line, but on this ways is more readable
   // First we test the arguments
   if (typeof whatToDo != String && whatToDo == '') {
@@ -190,6 +171,8 @@ function updateStore(id, whatToDo, completed) {
   // whatToDo (string)
   // completed (boolean)
   // @return (string)
+
+  completed = (completed == 'true');
 
   // First we test the arguments
   if (typeof id !== 'number') {
