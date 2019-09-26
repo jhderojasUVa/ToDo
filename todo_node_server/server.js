@@ -1,5 +1,6 @@
 const http = require('http');
 const fs = require('fs');
+const url = require('url');
 const querystring = require('querystring');
 
 const hostname = '127.0.0.1';
@@ -17,6 +18,7 @@ const errorMessages = {
 const server = http.createServer((req, res) => {
 
   const url = require('url').parse(req.url);
+
   // If there's query let's separate the variables
   var queryElements = querystring.parse(url.query, null, null, { decodeURIComponent: querystring.unescape() });
 
@@ -88,18 +90,32 @@ const server = http.createServer((req, res) => {
       }
       break;
     default:
-      res.statusCode = 404;
-      res.setHeader('Content-Type', 'text/html');
-      // Read the file index.html
-      fs.readFile( __dirname + '/index.html', (err, data) => {
+      // Serve other files [images] on the filesystem or the default
+      var query = url.parse(req.url, true).pathname;
+
+      fs.readFile(__dirname + query, function (err, content) {
         if (err) {
-          throw err;
+          // Send to the default page
+          res.statusCode = 404;
+          res.setHeader('Content-Type', 'text/html');
+          // Read the file index.html
+          fs.readFile( __dirname + '/index.html', (err, data) => {
+            if (err) {
+              throw err;
+            }
+            // Send to the browser
+            res.end(data.toString());
+          });
+          console.log('404! Send to default page!');
+        } else {
+          // Serve the image
+          res.statusCode = 200;
+          res.setHeader('Content-Type', 'image/png');
+          res.end(content);
         }
-        // Send to the browser
-        res.end(data.toString());
       });
-      console.log('404! Send to default page!');
   }
+
 });
 
 server.listen(port, hostname, () => {
