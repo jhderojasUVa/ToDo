@@ -5,8 +5,15 @@ const querystring = require('querystring');
 const hostname = '127.0.0.1';
 const port = 3000;
 
-// The data is stored in a file called file.json on the store directory
+// Message error (to convert to JSON as a response)
+const errorMessages = {
+  'whatToDo': 'What to Do is not an string or it\'s empty',
+  'id': 'ID is not a number',
+  'completed': 'Completed is not a boolean',
+  'unknow': 'Unknow error!'
+};
 
+// The data is stored in a file called file.json on the store directory
 const server = http.createServer((req, res) => {
 
   const url = require('url').parse(req.url);
@@ -142,12 +149,12 @@ function saveInStore(whatToDo, completed) {
   // This can be done in only one line, but on this ways is more readable
   // First we test the arguments
   if (typeof whatToDo != String && whatToDo == '') {
-    return false;
+    return JSON.stringify({'error' :true, 'cause': errorMessages.whatToDo});
   }
 
-  // Now if the completed is ok
+  // Now if the completed is ok (it will be difficult to get here!)
   if (typeof completed !== "boolean") {
-    return false;
+    return JSON.stringify({'error' :true, 'cause': errorMessages.completed});
   }
 
   let data = JSON.parse(retrieveStore());
@@ -176,15 +183,15 @@ function updateStore(id, whatToDo, completed) {
 
   // First we test the arguments
   if (typeof id !== 'number') {
-    return false;
+    return JSON.stringify({'error': true, 'cause': errorMessages.id});
   }
 
   if (typeof whatToDo != 'string' && whatToDo == '') {
-    return false;
+    return JSON.stringify({'error': true, 'cause': errorMessages.whatToDo});
   }
 
   if (typeof completed !== 'boolean') {
-    return false;
+    return JSON.stringify({'error': true, 'cause': errorMessages.completed});
   }
 
   // First we retrieve the data
@@ -214,7 +221,7 @@ function deleteStore(id) {
   // @return (string)
   // Check the argument
   if (typeof id !== 'number') {
-    return false;
+    return JSON.stringify({'error': true, 'cause': errorMessages.id});
   }
 
   // First we retrieve the data
