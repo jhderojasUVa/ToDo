@@ -25,12 +25,10 @@ const server = http.createServer((req, res) => {
       // Get all the to do or one by id
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
-      if (queryElements.id != undefined) {
+      if (queryElements.id != undefined) { // User ask for one ID
         res.end(retrieveToDo(parseInt(queryElements.id)));
-        console.log('The user GET a ToDo with ID: ' + queryElements.id);
-      } else {
+      } else { // User ask for all
         res.end(retrieveStore());
-        console.log('The user GET all the ToDos');
       }
       break;
     case ('/post'):
@@ -39,12 +37,11 @@ const server = http.createServer((req, res) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.end(saveInStore(queryElements.whatToDo, queryElements.completed));
-        console.log('User creates a new item ('+ queryElements.whatToDo + ', ' + queryElements.completed +')');
       } catch (err) {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'text/plain');
         res.end('There was an error.\nHey man, there was an error!\n' + err);
-        console.log('Error 500!');
+        console.log('Error 500! IP: '+ req.connection.remoteAddress+ ' Client: '+ req.headers['user-agent']);
         console.log(err);
       }
       break;
@@ -54,12 +51,11 @@ const server = http.createServer((req, res) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.end(deleteStore(parseInt(queryElements.id)));
-        console.log('User deletes an item: ' + parseInt(queryElements.id));
       } catch (err) {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'text/plain');
         res.end('There was an error.\nHey man, there was an error!\n' + err);
-        console.log('Error 500!');
+        console.log('Error 500! IP: '+ req.connection.remoteAddress+ ' Client: '+ req.headers['user-agent']);
         console.log(err);
       }
       break;
@@ -69,12 +65,11 @@ const server = http.createServer((req, res) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.end(updateStore(parseInt(queryElements.id), queryElements.whatToDo, queryElements.completed));
-        console.log('User update an item: ' + parseInt(queryElements.id));
       } catch (err) {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'text/plain');
         res.end('There was an error.\nHey man, there was an error!\n' + err);
-        console.log('Error 500!');
+        console.log('Error 500! IP: '+ req.connection.remoteAddress+ ' Client: '+ req.headers['user-agent']);
         console.log(err);
       }
       break;
@@ -84,12 +79,11 @@ const server = http.createServer((req, res) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.end(refactorId());
-        console.log('User refactor all the IDs of the ToDos');
       } catch (err) {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'text/plain');
         res.end('There was an error.\nHey man, there was an error!\n' + err);
-        console.log('Error 500!');
+        console.log('Error 500! IP: '+ req.connection.remoteAddress+ ' Client: '+ req.headers['user-agent']);
         console.log(err);
       }
       break;
