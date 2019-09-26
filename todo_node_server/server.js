@@ -120,8 +120,8 @@ function retrieveToDo(id) {
   // @return ToDo (JSON)
 
   // First we test the arguments
-  if (typeof id !== 'number') {
-    return false;
+  if (typeof id !== 'number' || isNaN(id)) {
+    return JSON.stringify({'error' :true, 'cause': errorMessages.id});
   }
 
   let data = JSON.parse(retrieveStore());
@@ -176,7 +176,7 @@ function updateStore(id, whatToDo, completed) {
   completed = (completed == 'true');
 
   // First we test the arguments
-  if (typeof id !== 'number') {
+  if (typeof id !== 'number' || isNaN(id)) {
     return JSON.stringify({'error': true, 'cause': errorMessages.id});
   }
 
@@ -214,7 +214,7 @@ function deleteStore(id) {
   // id (number)
   // @return (string)
   // Check the argument
-  if (typeof id !== 'number') {
+  if (typeof id !== 'number' || isNaN(id)) {
     return JSON.stringify({'error': true, 'cause': errorMessages.id});
   }
 
