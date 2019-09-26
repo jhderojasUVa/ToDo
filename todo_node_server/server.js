@@ -14,6 +14,15 @@ const errorMessages = {
   'unknow': 'Unknow error!'
 };
 
+// Mimetypes for serving files
+const mimeTypes = {
+  'html': 'text/html',
+  'pdf': 'application/pdf',
+  'png': 'image/png',
+  'jpg': 'image/jpg',
+  'gif': 'image/gif'
+}
+
 // The data is stored in a file called file.json on the store directory
 const server = http.createServer((req, res) => {
 
@@ -110,7 +119,8 @@ const server = http.createServer((req, res) => {
         } else {
           // Serve the image
           res.statusCode = 200;
-          res.setHeader('Content-Type', 'image/png');
+          //res.setHeader('Content-Type', 'image/png');
+          res.setHeader('Content-Type', mimeTypes[query.substr((query.length - 3), 3)]);
           res.end(content);
         }
       });
