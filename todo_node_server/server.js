@@ -119,7 +119,6 @@ const server = http.createServer((req, res) => {
         } else {
           // Serve the image
           res.statusCode = 200;
-          //res.setHeader('Content-Type', 'image/png');
           res.setHeader('Content-Type', mimeTypes[query.substr((query.length - 3), 3)]);
           res.end(content);
         }

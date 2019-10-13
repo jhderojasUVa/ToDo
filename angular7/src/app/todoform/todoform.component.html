@@ -1,0 +1,8 @@
+<p>We use the reactive way!</p>
+<form [(formGroup)]="toDoForm" (ngSubmit)="onSubmit()">
+    <label>ToDo:</label>
+    <input name="toDo" type="text" formControlName="toDoText">
+    <label>Completed:</label>
+    <input name="completed" type="checkbox" formControlName="completed">
+    <button>{{buttonText}}</button>
+</form>

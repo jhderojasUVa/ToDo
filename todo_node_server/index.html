@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>404 page not found</title>
+    <title>ToDos documentation page</title>
     <style>
       html {
         font-family: Arial, Helvetica, Times;
@@ -13,6 +13,33 @@
         max-width: 50%;
         margin: auto;
         padding: 1em;
+      }
+      .header {
+        background-color: rgb(104, 104, 209);
+        border-bottom: 2px solid rgb(170, 170, 170);
+        padding: 2rem;
+        margin-bottom: 5.5em;
+      }
+      .header .left {
+        float: left;
+      }
+      .header .left img {
+        position: relative;
+        top: -60px;
+        left: -40px;
+        width: 150px;
+      }
+      .header .right {
+        float: right;
+      }
+      .header h1 {
+        color: white;
+        text-shadow: 0 0 3px black;
+        margin-top: 0.1em;
+      }
+      .header h1 small {
+        font-size: 0.7em;
+        color: rgb(170, 170, 170);
       }
       h1 {
         color: rgba(30, 30, 30);
@@ -33,16 +60,23 @@
     </style>
   </head>
   <body>
-    <h1><img src="./resources/checkbox.png" alt="ToDo" style="width: 30px;"/> Simple ToDo Server</h1>
+    <div class="header">
+      <div class="left">
+          <img src="./resources/running_man.gif" alt="ToDo is running"/>
+      </div>
+      <div class="right">
+          <h1>Simple ToDo Server <small>is runing</small></h1>
+      </div>
+    </div>
     <p>This is a very simple ToDo REST server. See what you can do:</p>
     <p>
       <ul>
-        <li><strong><a href="/get">/get</a></strong>: for getting all the TODOs</li>
+        <li><strong><a href="/get">/get</a></strong>: for getting all the ToDos</li>
         <li><strong><a href="/get?id=1">/get?id=1</a></strong>: for getting a ToDo by id</li>
         <li><strong><a href="/post?whatToDo=XXXXX&completed=true">/post?whatToDo=XXXXX&completed=true|false</a></strong>: to add a ToDo</li>
         <li><strong><a href="/delete?id=XXX">/delete?id=XXX</a></strong>: removes a ToDo by id</li>
-        <li><strong><a href="/update?id=XXX&whatToDo=YYYYYY&completed=true">/update?id=XXX&whatToDo=YYYYYY&completed=true</a>: updates a ToDo by id</strong></li>
-        <li><strong><a href="/refactor">/refactor</a>: reorder all the ids on the ToDos</strong></li>
+        <li><strong><a href="/update?id=XXX&whatToDo=YYYYYY&completed=true">/update?id=XXX&whatToDo=YYYYYY&completed=true</a></strong>: updates a ToDo by id</li>
+        <li><strong><a href="/refactor">/refactor</a></strong>: reorder all the ids on the ToDos</li>
       </ul>
     </p>
     <p>Every time you do the correct it will respond with the ToDos.</p>
