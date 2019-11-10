@@ -33,9 +33,15 @@ class TodoItemComponent extends Component {
         } else {
           itsdoneitem = 'false';
         }
-        return (
-          <li key={index}>{item.whattodo} - <a onClick={this.changeItem.bind(this, index)}>{itsdoneitem}</a> - <a onClick={this.deleteItem.bind(this, index)}>[X]</a></li>
-        )
+        if (itsdoneitem == 'false') {
+          return (
+            <li key={index}><strike>{item.whattodo} - <a onClick={this.changeItem.bind(this, index)}>{itsdoneitem}</a></strike> - <a onClick={this.deleteItem.bind(this, index)}>[X]</a></li>
+          )
+        } else {
+          return (
+            <li key={index}>{item.whattodo} - <a onClick={this.changeItem.bind(this, index)}>{itsdoneitem}</a> - <a onClick={this.deleteItem.bind(this, index)}>[X]</a></li>
+          )
+        }
       });
     }
 
