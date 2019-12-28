@@ -24,10 +24,9 @@ export class FormComponent implements OnInit {
   }
 
   sendToDoItem() {
-
     this.todoItem = {
       what: this.whatToDo.value,
-      done: this.done.value
+      done: this.done.value ? true : false
     };
 
     this.sentToDo.emit(this.todoItem);

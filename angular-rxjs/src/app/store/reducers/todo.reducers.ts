@@ -1,4 +1,4 @@
-import { Action } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { ToDoItem } from '../models/todo.model';
 import * as TodoActions from '../actions/todo.actions';
 
@@ -11,15 +11,19 @@ export function todoReducer(state: ToDoItem[] = [initialState], action: TodoActi
     let newState: ToDoItem[];
     switch (action.type) {
         case (TodoActions.ADD_TODO):
-            return [
-                ...state,
-                action.payload
-            ];
+            if (state.find((element) => element.what == action.payload.what)) {
+                return state;
+            } else {
+                return [
+                    ...state,
+                    action.payload
+                ];;
+            }
         case (TodoActions.REMOVE_TODO):
-            newState = state.filter((element) => element.what != action.payload.what && element.done != action.payload.done);
+            newState = state.filter((element) => element.what !== action.payload.what);
+            console.log(newState);
             return newState;
         case (TodoActions.CHANGE_TODO):
-            //newState = state.filter((element) => element.what != action.payload.what && element.done != action.payload.done);
             newState = state.map((element) => {
                 if (element.what == action.payload.what) {
                     element.done = action.payload.done;
