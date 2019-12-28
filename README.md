@@ -14,7 +14,11 @@ The AngularJS version of the ToDo app. Simple and clean.
 
 ## Angular 7. (in progress)
 
-This will be the Angular 7 version with Redux and that uses the node server suplied here!.
+This will be the Angular 7 version that uses the node server suplied here!.
+
+## Angular 7 + Redux. (in progress)
+
+This version will be using Angular 7 and Redux storage.
 
 ## React. Done v0.1 (need documentation)
 
