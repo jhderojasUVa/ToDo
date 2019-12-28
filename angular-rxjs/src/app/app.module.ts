@@ -10,6 +10,10 @@ import { StoreModule } from '@ngrx/store';
 import { todoReducer } from './store/reducers/todo.reducers';
 import { ListComponent } from './list/list.component';
 
+import { HttpClientModule } from '@angular/common/http';
+
+import { TodoService } from './todo.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,9 +24,10 @@ import { ListComponent } from './list/list.component';
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    StoreModule.forRoot({todo: todoReducer})
+    StoreModule.forRoot({todo: todoReducer}),
+    HttpClientModule
   ],
-  providers: [],
+  providers: [ TodoService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
