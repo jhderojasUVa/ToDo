@@ -31,6 +31,9 @@ const server = http.createServer((req, res) => {
   // If there's query let's separate the variables
   var queryElements = querystring.parse(url.query, null, null, { decodeURIComponent: querystring.unescape() });
 
+  // Wops! don't forget the CORS
+  res.setHeader('Access-Control-Allow-Headers', req.header.origin);
+
   switch (url.pathname) {
     case ('/get'):
       // Get all the to do or one by id
