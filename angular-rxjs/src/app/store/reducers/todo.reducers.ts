@@ -21,7 +21,6 @@ export function todoReducer(state: ToDoItem[] = [initialState], action: TodoActi
             }
         case (TodoActions.REMOVE_TODO):
             newState = state.filter((element) => element.what !== action.payload.what);
-            console.log(newState);
             return newState;
         case (TodoActions.CHANGE_TODO):
             newState = state.map((element) => {
