@@ -18,7 +18,7 @@ This will be the Angular 7 version that uses the node server suplied here!.
 
 ## Angular 7 + Redux. (in progress)
 
-This version will be using Angular 7 and Redux storage.
+This version will be using Angular 7 and Redux storage. It will be read from the node server (so remember to start it), read from that and use the redux storage for working.
 
 ## React. Done v0.1 (need documentation)
 
