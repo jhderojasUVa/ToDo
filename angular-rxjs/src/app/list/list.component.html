@@ -1,0 +1,3 @@
+<ul>
+    <li *ngFor="let todo of todos | async" [ngClass]="{'strike': todo.done}">{{todo.what}}</li>
+</ul>

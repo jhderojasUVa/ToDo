@@ -1,0 +1,5 @@
+<form>
+<input placeholder="What will you do" [formControl]="whatToDo" type="text">
+<input [formControl]="done" type="checkbox">
+<button (click)="sendToDoItem()">Add</button>
+</form>
