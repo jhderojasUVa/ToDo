@@ -32,7 +32,7 @@ const server = http.createServer((req, res) => {
   var queryElements = querystring.parse(url.query, null, null, { decodeURIComponent: querystring.unescape() });
 
   // Wops! don't forget the CORS
-  res.setHeader('Access-Control-Allow-Headers', req.header.origin);
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
   switch (url.pathname) {
     case ('/get'):
