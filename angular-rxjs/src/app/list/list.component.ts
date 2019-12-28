@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { ToDoItem } from '../store/models/todo.model';
 import { AppState } from '../store/state/todo.state';
+import { CHANGE_TODO, REMOVE_TODO } from '../store/actions/todo.actions';
 
 @Component({
   selector: 'app-list',
@@ -17,12 +18,25 @@ export class ListComponent implements OnInit {
   constructor(
     private store: Store<AppState>
   ) {
-    //this.todos = this.store.select('todo').subscribe();
+    // Read from the store (select) and put on the variable to view
     this.todos = this.store.select('todo');
-    console.log(this.todos);
    }
 
   ngOnInit() {
+  }
+
+  change(todo: ToDoItem) {
+    // This will change the status from done to not done or viceversa
+    const newTodo = {
+      what: todo.what,
+      done: todo.done ? false : true
+    }
+    this.store.dispatch({type: CHANGE_TODO, payload: newTodo})
+  }
+
+  remove(todo: ToDoItem) {
+    // Remove a todo
+    this.store.dispatch({type: REMOVE_TODO, payload: todo});
   }
 
 }
