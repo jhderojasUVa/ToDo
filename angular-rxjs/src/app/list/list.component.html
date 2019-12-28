@@ -1,3 +1,3 @@
 <ul>
-    <li *ngFor="let todo of todos | async"><span [ngClass]="{'strike': todo.done}" (click)="change(todo)">{{todo.what}}</span>&nbsp;<span (click)="remove(todo)">(X)</span></li>
+    <li *ngFor="let todo of todos | async"><span [ngClass]="{'strike': todo.done}" (click)="change(todo)">{{todo.what}}</span>&nbsp;<span class="remove" (click)="remove(todo)">[X]</span></li>
 </ul>

@@ -1,7 +1,23 @@
-.strike {
-    text-decoration: line-through;
-}
-
-span {
-    cursor: pointer;
+ul {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.1rem;
+    li {
+        list-style-type: none;
+        margin: 0.5rem 0.5rem;
+    }
+    .strike {
+        text-decoration: line-through;
+        font-weight: bold;
+    }
+    span {
+        cursor: pointer;
+        &.remove {
+            font-weight: bold;
+            color: #5A81E8;
+            &:hover {
+                background-color: #5A81E8;
+                color: white;
+            }
+        }
+    }
 }

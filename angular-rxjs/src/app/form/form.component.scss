@@ -1,0 +1,34 @@
+form {
+    display: bock;
+    margin: 0 auto;
+    text-align: center;
+    border-bottom: 1px dotted #ddd;
+    input[type="text"] {
+        border: 1px solid #ddd;
+        padding: 0.5rem;
+        margin: 1rem;
+        width: calc(100% - 15rem);
+        &:focus {
+            border: 1px solid #333;
+        }
+    }
+    input[type="checkbox"] {
+        transform: scale(1.5);
+        display: inline-block;
+        vertical-align: middle;
+    }
+    button {
+        border: 1px solid #333;
+        background-color: white;
+        color: #333;
+        font-size: 1.0rem;
+        cursor: pointer;
+        padding: 0.3rem 1rem;
+        margin: 0 2rem;
+        &:hover {
+            background-color: #999;
+            color: #ddd;
+            box-shadow: 0 0 6px #222;
+        }
+    }
+}
