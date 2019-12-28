@@ -13,3 +13,11 @@ It have an small service that only reads from the node server the ToDos and put 
 In fact, there's some child to parent event emmiting (for trying to have the logic on the parent component) and maybe, later, some logic will be transfer to the service (it must be done in that way).
 
 And, finally, in the near future something to sync (but not a library, something custom made) the storage and the node server data.
+
+## Documentation
+
+For now, there's not too much documentation on it as a comments, but in a near future it will have more.
+
+## CSS/Styling
+
+This web app have more styling that the others because... why not?. But nothing serious.
