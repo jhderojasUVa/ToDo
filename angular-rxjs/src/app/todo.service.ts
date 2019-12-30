@@ -10,6 +10,7 @@ import { AppState } from './store/state/todo.state';
   providedIn: 'root'
 })
 export class TodoService {
+  // ToDo service for retrieving the data from the server (node server)
 
   constructor(
     private http: HttpClient,
@@ -20,9 +21,13 @@ export class TodoService {
 
    getAndPutStorage() {
     // Get elements from the server and put them on the storage
+    // Create the URL (can be done via config)
     const url = 'http://127.0.0.1:8080/get';
+    // Get the data
     this.http.get(url).subscribe((element: any) => {
       element.ToDos.forEach((element) => {
+        // Add the data via dispatching an action with the content
+        // TODO do it in a better way
         this.store.dispatch({
           type: ADD_TODO,
           payload: {

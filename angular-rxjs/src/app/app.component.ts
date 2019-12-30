@@ -13,16 +13,19 @@ import { TodoService } from './todo.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'angular-rxjs';
+  // App component (base and parent of all components)
 
   constructor(
     private store: Store<AppState>,
     private todoService: TodoService
   ) {
+    // Get the data from the server and put on the storage via a service
     this.todoService.getAndPutStorage();
   }
 
   receivedItem(ev) {
+    // This method will dispatch the action of add an item into the store
+    // the data comes from the child component
     this.store.dispatch({type: ADD_TODO, payload: ev});
   }
 }

@@ -12,11 +12,12 @@ import { CHANGE_TODO, REMOVE_TODO } from '../store/actions/todo.actions';
   styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit {
+  // This component will show the list of ToDo items
 
-  todos: Observable<ToDoItem[]>;
+  todos: Observable<ToDoItem[]>; // Observable that receives the ToDo items from the store
 
   constructor(
-    private store: Store<AppState>
+    private store: Store<AppState> // Store
   ) {
     // Read from the store (select) and put on the variable to view
     this.todos = this.store.select('todo');
@@ -31,11 +32,13 @@ export class ListComponent implements OnInit {
       what: todo.what,
       done: todo.done ? false : true
     }
+    // This dispatch the action change to the store
     this.store.dispatch({type: CHANGE_TODO, payload: newTodo})
   }
 
   remove(todo: ToDoItem) {
     // Remove a todo
+    // This will dispatch the action of removing an item from the store
     this.store.dispatch({type: REMOVE_TODO, payload: todo});
   }
 
