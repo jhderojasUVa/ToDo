@@ -7,7 +7,7 @@ import * as TodoActions from '../actions/todo.actions';
 const initialState: ToDoItem = {
     what: 'Something to do',
     done: false
-}
+}  
 
 export function todoReducer(state: ToDoItem[] = [initialState], action: TodoActions.Actions) {
     // This function contains the reducers
@@ -23,7 +23,7 @@ export function todoReducer(state: ToDoItem[] = [initialState], action: TodoActi
                 return [
                     ...state,
                     action.payload
-                ];;
+                ];
             }
         case (TodoActions.REMOVE_TODO):
             // Remove action
