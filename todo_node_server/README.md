@@ -15,7 +15,7 @@ http://localhost:3000/
 
 It stores the data in memory on the object called:
 
-´´´
+```
 todoData = [
   {
     id: ID NUMBER,
@@ -23,11 +23,11 @@ todoData = [
     completed: boolean (true|false)
   }
 ]
-´´´
+```
 
 Now it stores in disk on a directory called "store" in a file called "file.json" with this structure for better readability and future improvements.
 
-´´´
+```
 {
     "ToDos": [
         {
@@ -37,7 +37,7 @@ Now it stores in disk on a directory called "store" in a file called "file.json"
         }
     ]
 }
-´´´
+```
 
 Thinking about letting you to choose saving the data on memory, on file, on local storage and on session storage, because... why not?.
 
@@ -91,32 +91,32 @@ Is a JSON websocket so the communication with the server is done via JSON data a
 
 The message must have this structure:
 
-´´´
+```
 {
   "type": "get" | "post" | "delete" | "update"
 }
-´´´
+```
 
 If you need to send data needed for the operation must be on the data property, except for the get. So if you want to retrieve the todo with id 3:
 
-´´´
+```
 {
   "type": "get",
   "id": 3
 }
-´´´
+```
 
 Or, if you want to retrieve all the todos:
 
-´´´
+```
 {
   "type": "get"
 }
-´´´
+```
 
 Or if you want, for example, to add a new todo:
 
-´´´
+```
 {
   "type": "post",
   "data": {
@@ -124,7 +124,7 @@ Or if you want, for example, to add a new todo:
     "completed": true | false
   }
 }
-´´´
+```
 
 The message returned will be the same like the Rest server.
 
