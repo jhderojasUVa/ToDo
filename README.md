@@ -32,10 +32,12 @@ A version with React and Redux as storage.
 
 A version made with Polymer.
 
-## Node
+## Node (websocket and REST server)
 
 If you need a server, on the todo_node_server you will find one to test for simple REST.
 
-To run it: node server.js
+To run it: node web_server.js (REST server)
+
+To run it: node websocker_server.js (Websocket server)
 
 And read the console :)
