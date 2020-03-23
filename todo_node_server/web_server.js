@@ -9,14 +9,6 @@ const fsLib = require('./file.lib');
 const hostname = '127.0.0.1';
 const port = 8080;
 
-// Message error (to convert to JSON as a response)
-const errorMessages = {
-  'whatToDo': 'What to Do is not an string or it\'s empty',
-  'id': 'ID is not a number',
-  'completed': 'Completed is not a boolean',
-  'unknow': 'Unknow error!'
-};
-
 // Mimetypes for serving files
 const mimeTypes = {
   'html': 'text/html',
