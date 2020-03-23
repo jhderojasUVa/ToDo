@@ -45,7 +45,7 @@ const server = http.createServer((req, res) => {
       if (queryElements.id != undefined) { // User ask for one ID
         res.end(fsLib.retrieveToDo(parseInt(queryElements.id)));
       } else { // User ask for all
-        res.end(retrieveStore());
+        res.end(fsLib.retrieveStore());
       }
       break;
     case ('/post'):
