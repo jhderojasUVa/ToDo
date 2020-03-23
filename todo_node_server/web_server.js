@@ -1,7 +1,9 @@
 const http = require('http');
-const fs = require('fs');
 const url = require('url');
 const querystring = require('querystring');
+
+// File library for the storage
+const fsLib = require('./file.lib');
 
 const hostname = '127.0.0.1';
 const port = 8080;
@@ -40,7 +42,7 @@ const server = http.createServer((req, res) => {
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
       if (queryElements.id != undefined) { // User ask for one ID
-        res.end(retrieveToDo(parseInt(queryElements.id)));
+        res.end(fsLib.retrieveToDo(parseInt(queryElements.id)));
       } else { // User ask for all
         res.end(retrieveStore());
       }
@@ -50,7 +52,7 @@ const server = http.createServer((req, res) => {
       try {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.end(saveInStore(queryElements.whatToDo, queryElements.completed));
+        res.end(fsLib.saveInStore(queryElements.whatToDo, queryElements.completed));
       } catch (err) {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'text/plain');
@@ -64,7 +66,7 @@ const server = http.createServer((req, res) => {
       try {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.end(deleteStore(parseInt(queryElements.id)));
+        res.end(fsLib.deleteStore(parseInt(queryElements.id)));
       } catch (err) {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'text/plain');
@@ -78,7 +80,7 @@ const server = http.createServer((req, res) => {
       try {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.end(updateStore(parseInt(queryElements.id), queryElements.whatToDo, queryElements.completed));
+        res.end(fsLib.updateStore(parseInt(queryElements.id), queryElements.whatToDo, queryElements.completed));
       } catch (err) {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'text/plain');
@@ -92,7 +94,7 @@ const server = http.createServer((req, res) => {
       try {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.end(refactorId());
+        res.end(fsLib.refactorId());
       } catch (err) {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'text/plain');
@@ -133,160 +135,3 @@ const server = http.createServer((req, res) => {
 server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
-
-function retrieveStore() {
-  // This function will retrieve the the content of the store file
-  // @return (string)
-  return fs.readFileSync(__dirname + '/store/file.json', (err, data) => {
-    return data.toString();
-  }).toString();
-}
-
-function retrieveToDo(id) {
-  // This function will return one ToDo by id
-  // id (number)
-  // @return ToDo (JSON)
-
-  // First we test the arguments
-  if (typeof id !== 'number' || isNaN(id)) {
-    return JSON.stringify({'error' :true, 'cause': errorMessages.id});
-  }
-
-  let data = JSON.parse(retrieveStore());
-
-  return JSON.stringify(data.ToDos.filter((element) => {
-    return element.id == id;
-  }));
-}
-
-function saveInStore(whatToDo, completed) {
-  // Saves a ToDo in the store
-  // whatToDo (string): Text to write
-  // completed (boolean): if it's completed or not
-  // @return (boolean)
-
-  // Convert completed string to boolean
-  completed = (completed == 'true');
-
-  // This can be done in only one line, but on this ways is more readable
-  // First we test the arguments
-  if (typeof whatToDo != String && whatToDo == '') {
-    return JSON.stringify({'error' :true, 'cause': errorMessages.whatToDo});
-  }
-
-  // Now if the completed is ok (it will be difficult to get here!)
-  if (typeof completed !== "boolean") {
-    return JSON.stringify({'error' :true, 'cause': errorMessages.completed});
-  }
-
-  let data = JSON.parse(retrieveStore());
-  data.ToDos.push({
-    'id': (data.ToDos[(data.ToDos.length - 1)].id) + 1,
-    'whatToDo': whatToDo,
-    'completed': completed
-  });
-  fs.writeFileSync(__dirname + '/store/file.json', JSON.stringify(data), (err) => {
-    if (err) {
-      console.log('There was an error saving the store file: ' + err);
-    }
-  });
-
-  return JSON.stringify(data);
-}
-
-function updateStore(id, whatToDo, completed) {
-  // Function that updates an item in the store
-  // id (number)
-  // whatToDo (string)
-  // completed (boolean)
-  // @return (string)
-
-  completed = (completed == 'true');
-
-  // First we test the arguments
-  if (typeof id !== 'number' || isNaN(id)) {
-    return JSON.stringify({'error': true, 'cause': errorMessages.id});
-  }
-
-  if (typeof whatToDo != 'string' && whatToDo == '') {
-    return JSON.stringify({'error': true, 'cause': errorMessages.whatToDo});
-  }
-
-  if (typeof completed !== 'boolean') {
-    return JSON.stringify({'error': true, 'cause': errorMessages.completed});
-  }
-
-  // First we retrieve the data
-  let data = JSON.parse(retrieveStore());
-
-  // Search and change the item
-  data.ToDos.forEach((element) => {
-    if (element.id == id) {
-      element.whatToDo = whatToDo;
-      element.completed = completed
-    }
-  });
-
-  // Now save the file
-  fs.writeFile(__dirname + '/store/file.json', JSON.stringify(data), (err) => {
-    if (err) {
-      console.log('There was an error saving the store file: ' + err);
-    }
-  });
-
-  return JSON.stringify(data);
-}
-
-function deleteStore(id) {
-  // Function that removes an element from the store
-  // id (number)
-  // @return (string)
-  // Check the argument
-  if (typeof id !== 'number' || isNaN(id)) {
-    return JSON.stringify({'error': true, 'cause': errorMessages.id});
-  }
-
-  // First we retrieve the data
-  let data = JSON.parse(retrieveStore());
-
-  // Now we remove the item with the id from the data
-  data.ToDos = data.ToDos.filter((element, key) => {
-    return element.id != id;
-  });
-
-  // Save to disk
-  fs.writeFile(__dirname + '/store/file.json', JSON.stringify(data), (err) => {
-    if (err) {
-      console.log('There was an error saving the store file: ' + err);
-    }
-  });
-
-  return JSON.stringify(data);
-}
-
-function refactorId() {
-  // Function that refactors the ids
-  // @return (string)
-
-  // First we retrieve the data
-  let data = JSON.parse(retrieveStore());
-
-  // Let's sort the elements by their IDs
-  data.ToDos.sort((elemA, elemB) => {
-    return elemA.id - elemB.id
-  });
-
-  // Now let's put the new IDs
-  data.ToDos.forEach((element, key) => {
-    element.id = key;
-  });
-
-  // And now, store into disk
-  fs.writeFile(__dirname + '/store/file.json', JSON.stringify(data), (err) => {
-    if (err) {
-      console.log('There was an error saving the store file: ' + err);
-    }
-  });
-
-  return JSON.stringify(data);
-}
