@@ -1,5 +1,12 @@
 const fs = require('fs');
 
+const errorMessages = {
+    'whatToDo': 'What to Do is not an string or it\'s empty',
+    'id': 'ID is not a number',
+    'completed': 'Completed is not a boolean',
+    'unknow': 'Unknow error!'
+  };
+
 const retrieveStore = () => {
     // This function will retrieve the the content of the store file
     // @return (string)
