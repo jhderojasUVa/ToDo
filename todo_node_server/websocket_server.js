@@ -1,15 +1,19 @@
 // Websocket https://github.com/websockets/ws
 const Websocket = require('ws');
 const fs = require('fs');
+const os = require('os');
+
+const websocketPort = 8080;
+const version = 0.1
 
 const wsServer = new Websocket.Server({
-    port: 8080
+    port: websocketPort
 });
 
 const webSocketHelloConnection = {
     "connection": "ok",
     "application": "Websocket ToDo Application",
-    "websocket version": 0.1
+    "websocket version": version
 }
 
 const messageError = {
@@ -59,6 +63,9 @@ wsServer.on('connection', (ws) => {
     // When the user connects send the hello with the version
     ws.send(JSON.stringify(webSocketHelloConnection));
 })
+
+// Send status to the console
+console.log(`WebSocket server running on port ${websocketPort}\r\nConnect via ws://${os.hostname()}:${websocketPort}`);
 
 function getMessages(message) {
     // Function for the get method of the websocket
