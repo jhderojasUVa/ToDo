@@ -128,6 +128,12 @@ Or if you want, for example, to add a new todo:
 
 The message returned will be the same like the Rest server.
 
+## File library
+
+For better and easy reading I have created a file storage library who takes care of the storage (retrieves, saves, updates, refactors and so on) on file file.lib.js
+
+I know that the exports and the library can be done in a better way but this is a fast solution.
+
 ## Do what you want
 
 Because it's so simple and need no libraries, do what ever you want, for example, -you can create a cache that stores the data on disk- or create an html files (on disk) to retrieve when the user calls some urls or whatever you want. It's free :)
