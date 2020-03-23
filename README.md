@@ -32,6 +32,10 @@ A version with React and Redux as storage.
 
 A version made with Polymer.
 
+## Plain Web Components. Not done
+
+A version made with plain webcomponents extending the DOM.
+
 ## Node (websocket and REST server)
 
 If you need a server, on the todo_node_server you will find one to test for simple REST.
