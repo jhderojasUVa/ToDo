@@ -41,7 +41,7 @@ Now it stores in disk on a directory called "store" in a file called "file.json"
 
 Thinking about letting you to choose saving the data on memory, on file, on local storage and on session storage, because... why not?.
 
-## REST webserver
+# REST webserver
 
 A very simple REST node that you can execute and make the petitions:
 
@@ -75,19 +75,19 @@ Will change/update a ToDo by his id. Example:
 
 http://localhost:3000/update?id=1&whatToDo=Anything&completed=false
 
-Will change the ToDo with id number 1 putting the content sent. Nothing more, nothing less. The Websocket version will respond to every connected client! (be aware of this).
+Will change the ToDo with id number 1 putting the content sent. Nothing more, nothing less.
 
 ## /refactor
 
 Clean the gaps between the IDs of the elements after some use. It's like the reorder in MySQL but more dirty.
 
-## Websocket server
+# Websocket server (updates in progress)
 
-Is a working progress. The idea is to have a websocket so many users can get/update/post/etc... todos and colaborate between them (the idea).
+Is a working progress. The idea is to have a websocket so many users can get/update/post/etc... todos and colaborate between them (the idea). The Websocket version will respond to every connected client! (be aware of this).
 
 Is a JSON websocket so the communication with the server is done via JSON data and will respond allways with a JSON.
 
-# Message to send
+## Message to send
 
 The message must have this structure:
 
