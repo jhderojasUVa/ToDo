@@ -66,6 +66,39 @@ const retrieveToDo = (id) => {
   
     return JSON.stringify(data);
   }
+
+  const saveInStoreNoReturn = (whatToDo, completed) => {
+    // Saves a ToDo in the store
+    // whatToDo (string): Text to write
+    // completed (boolean): if it's completed or not
+    // @return void
+  
+    // Convert completed string to boolean
+    completed = (completed == 'true');
+  
+    // This can be done in only one line, but on this ways is more readable
+    // First we test the arguments
+    if (typeof whatToDo != String && whatToDo == '') {
+      return JSON.stringify({'error' :true, 'cause': errorMessages.whatToDo});
+    }
+  
+    // Now if the completed is ok (it will be difficult to get here!)
+    if (typeof completed !== "boolean") {
+      return JSON.stringify({'error' :true, 'cause': errorMessages.completed});
+    }
+  
+    let data = JSON.parse(retrieveStore());
+    data.ToDos.push({
+      'id': (data.ToDos[(data.ToDos.length - 1)].id) + 1,
+      'whatToDo': whatToDo,
+      'completed': completed
+    });
+    fs.writeFileSync(__dirname + '/store/file.json', JSON.stringify(data), (err) => {
+      if (err) {
+        console.log('There was an error saving the store file: ' + err);
+      }
+    });
+  }
   
  const updateStore = (id, whatToDo, completed) => {
     // Function that updates an item in the store
@@ -170,3 +203,4 @@ const deleteStore = (id) => {
   exports.updateStore = updateStore;
   exports.deleteStore = deleteStore;
   exports.refactorId = refactorId;
+  exports.saveInStoreNoReturn = saveInStoreNoReturn;

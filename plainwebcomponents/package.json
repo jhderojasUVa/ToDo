@@ -1,11 +1,11 @@
 {
-  "name": "ToDos in plainComponent",
+  "name": "ToDosPlainComponent",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.js --watch"
   },
   "keywords": [],
   "author": "",

@@ -4,6 +4,7 @@ const os = require('os');
 
 // File library for the storage
 const fsLib = require('./file.lib');
+const { RSA_NO_PADDING } = require('constants');
 
 const websocketPort = 8080;
 const version = 0.1
@@ -23,7 +24,14 @@ const messageError = {
     "message": ""
 }
 
+// Socket opened (array)
+var socketClient = [];
+
 wsServer.on('connection', (ws) => {
+
+    socketClient.push(ws);
+    //ws.id = socketClient.length;
+
     ws.on('message', (message) => {
         // message contains all the data
 
@@ -33,19 +41,26 @@ wsServer.on('connection', (ws) => {
             switch (parseMessage.type) {
                 case 'get':
                     // GET method
-                    ws.send(getMessages(parseMessage));
+                    socketClient.forEach((socket) => {
+                        socket.send((getMessages(parseMessage)));
+                    })
+                    //ws.send(getMessages(parseMessage));
                     break;
                 case 'post':
                     // POST method
-                    ws.send(postMessages(postMessages));
+                    ws.send(postMessages(parseMessage));
+
+                    socketClient.forEach((socket) => {
+                        socket.send((getMessages(parseMessage)));
+                    })
                     break;
                 case 'update':
                     // Update method
-                    ws.send(updateMessages(postMessages));
+                    ws.send(updateMessages(parseMessage));
                     break;
                 case 'delete':
                     // Delete method
-                    ws.send(deleteMessages(postMessages));
+                    ws.send(deleteMessages(parseMessage));
                     break;
                 case 'refactor':
                     // Refactor method
@@ -56,7 +71,6 @@ wsServer.on('connection', (ws) => {
                     ws.send(retrieveStore());
             }
         } catch (err) {
-            console.log('cacacacaca', err);
             messageError.message = err;
             ws.send(JSON.stringify(messageError));
         }
@@ -86,7 +100,7 @@ function postMessages(message) {
     // @returns: the ToDos
     if (message.data && (message.data.whatToDo && message.data.completed)) {
         // If we have the needed data, save into the store
-        return fsLib.saveInStore(message.data.whatToDo, message.data.completed);
+        return fsLib.saveInStoreNoReturn(message.data.whatToDo, message.data.completed);
     } else {
         // Send an error if not
         messageError = 'Minimun data not retrieved: No whatToDo or/and completed sended';

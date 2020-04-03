@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>ToDo in vanilla Javascript</title>
+    </head>
+    <body>
+        <app-create-todo></app-create-todo>
+        <a href="#" onclick="sendToWebsocket()">Pulsame</a>
+        <script src="./dist/bundle.js"></script>
+        <script>
+            function sendToWebsocket() {
+                ws.send(get)
+            }
+        </script>
+    </body>
+</html>

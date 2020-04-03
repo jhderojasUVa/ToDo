@@ -75,7 +75,7 @@ Will change/update a ToDo by his id. Example:
 
 http://localhost:3000/update?id=1&whatToDo=Anything&completed=false
 
-Will change the ToDo with id number 1 putting the content sent. Nothing more, nothing less
+Will change the ToDo with id number 1 putting the content sent. Nothing more, nothing less. The Websocket version will respond to every connected client! (be aware of this).
 
 ## /refactor
 
