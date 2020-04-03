@@ -28,60 +28,80 @@ const messageError = {
 var socketClient = [];
 
 wsServer.on('connection', (ws) => {
-
+    // Add a property for ID every conecction
+    ws.id = socketClient.length;
+    // Add the connection to the socket client array
     socketClient.push(ws);
-    //ws.id = socketClient.length;
+
+    // Put a message on the console
+    console.log('Client connected!. Total clients connected: ' + socketClient.length);
 
     ws.on('message', (message) => {
         // message contains all the data
 
-        // TODO: refactor all of the cases in several functions for easy reading!
         try {
-            const parseMessage = JSON.parse(message)
-            switch (parseMessage.type) {
-                case 'get':
-                    // GET method
-                    socketClient.forEach((socket) => {
-                        socket.send((getMessages(parseMessage)));
-                    })
-                    break;
-                case 'post':
-                    // POST method
-                    ws.send(postMessages(parseMessage));
-
-                    socketClient.forEach((socket) => {
-                        socket.send((getMessages(parseMessage)));
-                    })
-                    break;
-                case 'update':
-                    // Update method
-                    ws.send(updateMessages(parseMessage));
-
-                    socketClient.forEach((socket) => {
-                        socket.send((getMessages(parseMessage)));
-                    })
-                    break;
-                case 'delete':
-                    // Delete method
-                    ws.send(deleteMessages(parseMessage));
-
-                    socketClient.forEach((socket) => {
-                        socket.send((getMessages(parseMessage)));
-                    })
-                    break;
-                case 'refactor':
-                    // Refactor method
-                    ws.send(refactorId());
-                    break;
-                default:
-                    // For whatever message send all the ToDos to the user
-                    ws.send(retrieveStore());
-            }
+            // Test if the client send a valid JSON
+            var parseMessage = JSON.parse(message);
         } catch (err) {
-            messageError.message = err;
+            // IF not, send a message (in JSON format, of course)
+            messageError.message = "Not valid JSON message.";
             ws.send(JSON.stringify(messageError));
         }
+
+        switch (parseMessage.type) {
+            case 'get':
+                // GET method
+
+                // Send to everyone!
+                socketClient.forEach((socket) => {
+                    socket.send((getMessages(parseMessage)));
+                })
+                break;
+            case 'post':
+                // POST method
+                ws.send(postMessages(parseMessage));
+
+                // Send to everyone!
+                socketClient.forEach((socket) => {
+                    socket.send((getMessages(parseMessage)));
+                })
+                break;
+            case 'update':
+                // Update method
+                ws.send(updateMessages(parseMessage));
+
+                // Send to everyone!
+                socketClient.forEach((socket) => {
+                    socket.send((getMessages(parseMessage)));
+                })
+                break;
+            case 'delete':
+                // Delete method
+                ws.send(deleteMessages(parseMessage));
+
+                // Send to everyone!
+                socketClient.forEach((socket) => {
+                    socket.send((getMessages(parseMessage)));
+                })
+                break;
+            case 'refactor':
+                // Refactor method
+                ws.send(refactorId());
+                break;
+            default:
+                // For whatever message send all the ToDos to the user
+                //ws.send(retrieveStore());
+                messageError.message = "Sorry, there was an error!. Please refeer to the documentation.";
+                ws.send(JSON.stringify(messageError));
+        }
     });
+
+    ws.on('close', () => {
+        // Remove from the array
+        socketClient = socketClient.filter((socket) => socket.id != ws.id);
+        // Send a message
+        console.log('Client closes connection. Total clients: ' + socketClient.length);
+    })
 
     // When the user connects send the hello with the version
     ws.send(JSON.stringify(webSocketHelloConnection));

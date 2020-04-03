@@ -87,6 +87,8 @@ Is a working progress. The idea is to have a websocket so many users can get/upd
 
 Is a JSON websocket so the communication with the server is done via JSON data and will respond allways with a JSON.
 
+See the console to know how many clients are connected and the status (new connection or closed conection).
+
 ## Message to send
 
 The message must have this structure:
