@@ -11,8 +11,32 @@ class CreateTodo extends HTMLElement {
         this.inputElement = document.createElement('input');
         this.inputElement.setAttribute('type', 'text');
 
-        this.baseElement.append(this.inputElement);
-        this.shadow.append(this.baseElement);
+        this.buttonSubmit = document.createElement('button');
+        this.buttonSubmit.innerHTML = 'Submit new ToDo';
+
+        this.buttonSubmit.addEventListener('click', () => {
+            this._sendToDo(this.inputElement.value);
+        })
+
+        this.baseElement.appendChild(this.inputElement);
+        this.baseElement.appendChild(this.buttonSubmit);
+        this.shadow.appendChild(this.baseElement);
+    }
+
+    _sendToDo(data) {
+        // Compose the message
+        const postMessage = {
+            "type": "post",
+            "data": {
+                "whatToDo": data,
+                "completed": false
+            }
+        };
+
+        if (data && data !== '') {
+            // If we are sending something let's speak with the parent
+            parent.postMessage(JSON.stringify(postMessage), document.baseURI);
+        }
     }
 }
 

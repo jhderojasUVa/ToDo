@@ -125,12 +125,12 @@ function getMessages(message) {
 function postMessages(message) {
     // Function for the post method of the websocket
     // @returns: the ToDos
-    if (message.data && (message.data.whatToDo && message.data.completed)) {
+    if (message.data !== undefined && (message.data.whatToDo !== undefined && message.data.completed !== undefined)) {
         // If we have the needed data, save into the store
-        return fsLib.saveInStoreNoReturn(message.data.whatToDo, message.data.completed);
+        fsLib.saveInStoreNoReturn(message.data.whatToDo, message.data.completed);
     } else {
         // Send an error if not
-        messageError = 'Minimun data not retrieved: No whatToDo or/and completed sended';
+        messageError.message = 'Minimun data not retrieved: No whatToDo or/and completed sended';
         return JSON.stringify(messageError);
     }
 }
@@ -143,7 +143,7 @@ function updateMessages(message) {
         return fsLib.updateStoreNoReturn(message.data.id, message.data.whatToDo, message.data.completed);
     } else {
         // Oh oh, there's an error
-        messageError = 'Minimun data not retrieved: No ID, whatToDo or/and completed sended';
+        messageError.message = 'Minimun data not retrieved: No ID, whatToDo or/and completed sended';
         return JSON.stringify(messageError);
     }
 }
@@ -156,7 +156,7 @@ function deleteMessages(message) {
         return fsLib.deleteStoreNoReturn(message.data.id)
     } else {
         // Oh oh, there's an error
-        messageError = 'Minimun data not retrieved: No ID sended';
+        messageError.message = 'Minimun data not retrieved: No ID sended';
         return JSON.stringify(messageError);
     }
 }

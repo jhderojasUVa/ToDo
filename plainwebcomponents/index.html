@@ -5,12 +5,7 @@
     </head>
     <body>
         <app-create-todo></app-create-todo>
-        <a href="#" onclick="sendToWebsocket()">Pulsame</a>
+        <app-show-messages></app-show-messages>
         <script src="./dist/bundle.js"></script>
-        <script>
-            function sendToWebsocket() {
-                ws.send(get)
-            }
-        </script>
     </body>
 </html>
