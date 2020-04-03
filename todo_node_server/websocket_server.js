@@ -44,7 +44,6 @@ wsServer.on('connection', (ws) => {
                     socketClient.forEach((socket) => {
                         socket.send((getMessages(parseMessage)));
                     })
-                    //ws.send(getMessages(parseMessage));
                     break;
                 case 'post':
                     // POST method
@@ -57,10 +56,18 @@ wsServer.on('connection', (ws) => {
                 case 'update':
                     // Update method
                     ws.send(updateMessages(parseMessage));
+
+                    socketClient.forEach((socket) => {
+                        socket.send((getMessages(parseMessage)));
+                    })
                     break;
                 case 'delete':
                     // Delete method
                     ws.send(deleteMessages(parseMessage));
+
+                    socketClient.forEach((socket) => {
+                        socket.send((getMessages(parseMessage)));
+                    })
                     break;
                 case 'refactor':
                     // Refactor method
@@ -113,7 +120,7 @@ function updateMessages(message) {
     // @returns: the ToDos
     if (message.data && (message.data.id && message.data.whatToDo && message.data.completed)) {
         // We have all we need
-        return fsLib.updateStore(message.data.id, message.data.whatToDo, message.data.completed);
+        return fsLib.updateStoreNoReturn(message.data.id, message.data.whatToDo, message.data.completed);
     } else {
         // Oh oh, there's an error
         messageError = 'Minimun data not retrieved: No ID, whatToDo or/and completed sended';
@@ -126,7 +133,7 @@ function deleteMessages(message) {
     // @returns: the ToDos
     if (message.data.id) {
         // Delete from the store
-        return fsLib.deleteStore(message.data.id)
+        return fsLib.deleteStoreNoReturn(message.data.id)
     } else {
         // Oh oh, there's an error
         messageError = 'Minimun data not retrieved: No ID sended';

@@ -142,6 +142,47 @@ const retrieveToDo = (id) => {
   
     return JSON.stringify(data);
   }
+
+  const updateStoreNoReturn = (id, whatToDo, completed) => {
+    // Function that updates an item in the store
+    // id (number)
+    // whatToDo (string)
+    // completed (boolean)
+    // @return (vpid)
+  
+    completed = (completed == 'true');
+  
+    // First we test the arguments
+    if (typeof id !== 'number' || isNaN(id)) {
+      return JSON.stringify({'error': true, 'cause': errorMessages.id});
+    }
+  
+    if (typeof whatToDo != 'string' && whatToDo == '') {
+      return JSON.stringify({'error': true, 'cause': errorMessages.whatToDo});
+    }
+  
+    if (typeof completed !== 'boolean') {
+      return JSON.stringify({'error': true, 'cause': errorMessages.completed});
+    }
+  
+    // First we retrieve the data
+    let data = JSON.parse(retrieveStore());
+  
+    // Search and change the item
+    data.ToDos.forEach((element) => {
+      if (element.id == id) {
+        element.whatToDo = whatToDo;
+        element.completed = completed
+      }
+    });
+  
+    // Now save the file
+    fs.writeFile(__dirname + '/store/file.json', JSON.stringify(data), (err) => {
+      if (err) {
+        console.log('There was an error saving the store file: ' + err);
+      }
+    });
+  }
   
 const deleteStore = (id) => {
     // Function that removes an element from the store
@@ -168,6 +209,31 @@ const deleteStore = (id) => {
     });
   
     return JSON.stringify(data);
+  }
+
+  const deleteStoreNoReturn = (id) => {
+    // Function that removes an element from the store
+    // id (number)
+    // @return (void)
+    // Check the argument
+    if (typeof id !== 'number' || isNaN(id)) {
+      return JSON.stringify({'error': true, 'cause': errorMessages.id});
+    }
+  
+    // First we retrieve the data
+    let data = JSON.parse(retrieveStore());
+  
+    // Now we remove the item with the id from the data
+    data.ToDos = data.ToDos.filter((element, key) => {
+      return element.id != id;
+    });
+  
+    // Save to disk
+    fs.writeFile(__dirname + '/store/file.json', JSON.stringify(data), (err) => {
+      if (err) {
+        console.log('There was an error saving the store file: ' + err);
+      }
+    });
   }
   
  const refactorId = () => {
@@ -201,6 +267,8 @@ const deleteStore = (id) => {
   exports.retrieveToDo = retrieveToDo;
   exports.saveInStore = saveInStore;
   exports.updateStore = updateStore;
+  exports.updateStoreNoReturn = updateStoreNoReturn;
   exports.deleteStore = deleteStore;
+  exports.deleteStoreNoReturn = deleteStoreNoReturn;
   exports.refactorId = refactorId;
   exports.saveInStoreNoReturn = saveInStoreNoReturn;
